@@ -14,21 +14,13 @@ import Modelo.ModeloFicheros;
 public class ModeloPrincipal {
 
 	private VistaAlumnos vistaAlumnos;
-	private ModeloSQL modeloSQL;
-	private ModeloFicheros modeloFicheros;
 	private ModeloPrincipal modelo;
 	
 	
 	
 	public String getBBDD() {
-		
-			return modelo.getBBDD();
-		
-		
-		
-		
+			return modelo.getBBDD();	
 	}
-	
 	public void setVistaPrincipal(VistaAlumnos vistaAlumnos) {
 		this.vistaAlumnos=vistaAlumnos;
 		
@@ -36,9 +28,7 @@ public class ModeloPrincipal {
 
 
 	public ArrayList<Alumnos> recogerDatosBBDD() {
-	
 			return this.modelo.recogerDatosBBDD();
-		
 		
 	}
 
