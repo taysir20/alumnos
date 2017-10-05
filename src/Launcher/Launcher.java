@@ -14,21 +14,18 @@ public class Launcher {
 		Controlador controlador = new Controlador();
 		ModeloSQL modeloSQL= new ModeloSQL();
 		vistaAlumnos.setControlador(controlador);
-		vistaAlumnos.setModeloPrincipal(modeloPrincipal);
+		//vistaAlumnos.setModeloPrincipal(modeloPrincipal); No lo va a conocer
 		controlador.setVistaPrincipal(vistaAlumnos);
 		controlador.setModeloPrincipal(modeloPrincipal);
 		modeloPrincipal.setVistaPrincipal(vistaAlumnos);
-		modeloPrincipal.NewBBDD(controlador.tipoDeBBDD());
-		controlador.getBBDD();
+		modeloPrincipal.NuevoDato(controlador.tipoDeDatos());
+		controlador.conexionDatos();
 		controlador.crearTablaAlumnos();
 		vistaAlumnos.setVisible(true);
-		
-//		vistaAlumnos.setControlador(controlador);
-//		vistaAlumnos.setModelo(modelo);
-//		controlador.setVista(vistaAlumnos);
-//		modelo.setVista(vistaAlumnos);	
-//		vistaAlumnos.setVisible(true);
+	
 
 	}
+	
+	
 
 }

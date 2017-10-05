@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 
-import Entidad.Alumnos;
+import com.mysql.jdbc.Statement;
 
-public class ModeloSQL extends ModeloPrincipal implements InterfaceAccesoDatos{ 
+public class ModeloSQL implements InterfaceAccesoDatos{ 
 	
 	private ModeloPrincipal modeloPrincipal;
 	private Alumnos alumno = null;
@@ -25,11 +25,6 @@ public class ModeloSQL extends ModeloPrincipal implements InterfaceAccesoDatos{
 	private String Usuario;
 	private String Pass;
 	private String bbdd;
-	private String dni;
-	private String nombre;
-	private String apellido;
-	private String nacionalidad;
-	private String telefono;
 	ArrayList<Alumnos> resultados = new ArrayList<Alumnos>();
 	
 	
@@ -64,6 +59,7 @@ public class ModeloSQL extends ModeloPrincipal implements InterfaceAccesoDatos{
 	
 	
 	public ArrayList<Alumnos> recogerDatosBBDD() {
+		
 		try {
 			if (conexion == null) {
 				System.out.println("NO EXISTE");
@@ -71,7 +67,7 @@ public class ModeloSQL extends ModeloPrincipal implements InterfaceAccesoDatos{
 			}
 			PreparedStatement pstmt = conexion.prepareStatement("SELECT * FROM alumnos");
 			ResultSet rset = pstmt.executeQuery();
-
+			resultados = new ArrayList<Alumnos>();
 			while (rset.next()) {
 				alumno = new Alumnos(rset.getInt("cod"), rset.getString("nombre"), rset.getString("apellido"), rset.getString("dni"), rset.getString("nacionalidad"), rset.getInt("telefono"));
 				resultados.add(alumno);
@@ -95,7 +91,7 @@ public class ModeloSQL extends ModeloPrincipal implements InterfaceAccesoDatos{
 		
 	}
 	@Override
-	public String getBBDD() {
+	public String AccesoBBDD() {
 		String aviso;
 		try {
 			leerFicheroBBDD();
@@ -105,9 +101,8 @@ public class ModeloSQL extends ModeloPrincipal implements InterfaceAccesoDatos{
 			aviso = "¡Conexión satisfactoria!";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			JOptionPane.showMessageDialog(null, "No se ha podido establecer conexión con la base de Datos.");
 			System.out.println(" – Error de Conexión con MySQL -");
-			aviso = "¡Conexión Fallida!";
+			aviso = "error";
 			e.printStackTrace();
 			
 		}
@@ -115,6 +110,74 @@ public class ModeloSQL extends ModeloPrincipal implements InterfaceAccesoDatos{
 		
 
 	}
+
+
+
+	@Override
+	public int addUnAlumno(Alumnos alumno) {
+		int respuesta=0;
+		try {
+			PreparedStatement pstmt;
+			String query = "INSERT INTO `alumnos` (`dni`, `nombre`, `apellido`, `telefono`, `nacionalidad`) VALUES ( ?,?,?,?,? )";
+			pstmt = conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			pstmt.setString(1, alumno.getDni().toUpperCase());
+			pstmt.setString(2, alumno.getNombre().toUpperCase());
+			pstmt.setString(3, alumno.getApellido().toUpperCase());
+			pstmt.setInt(4, alumno.getTelefono());
+			pstmt.setString(5, alumno.getNacionalidad().toUpperCase());
+			respuesta=pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return respuesta;
+
+	}
+
+
+
+	@Override
+	public int deleteAlumno(String cod) {
+		int retorno = 0;
+		try {
+			if (conexion == null) {
+				System.out.println("NO EXISTE");
+				System.exit(-1);
+			}
+			PreparedStatement pstmt = conexion.prepareStatement("DELETE FROM `alumnos` WHERE `alumnos`.`cod` =" + cod);
+			retorno=pstmt.executeUpdate();
+				
+	} catch (SQLException s) {
+		s.printStackTrace();
+	}
+
+		return retorno;
+	}
+
+
+
+	@Override
+	public int deleteAllAlumnos() {
+		int respuesta=0;
+		try {
+			if (conexion == null) {
+				System.out.println("NO EXISTE");
+				System.exit(-1);
+			}
+			PreparedStatement pstmt = conexion.prepareStatement("DELETE FROM `alumnos` ");
+
+			respuesta=pstmt.executeUpdate();
+		} catch (SQLException s) {
+			s.printStackTrace();
+		}
+		return respuesta;
+		
+	}
+
+
+
+	
+	
 	
 	
 }

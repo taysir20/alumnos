@@ -6,14 +6,20 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import Controlador.Controlador;
+import Modelo.Alumnos;
 import Modelo.ModeloPrincipal;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
+import java.util.ArrayList;
+
 import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTable;
@@ -21,6 +27,10 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class VistaAlumnos extends JFrame {
 
@@ -40,6 +50,7 @@ public class VistaAlumnos extends JFrame {
 	private JButton btnCopiarFichero;
 	private JButton btnSubirFichero;
 	private JTable tableAlumnos;
+	private ArrayList<Alumnos> resultados;
 
 
 	
@@ -107,8 +118,20 @@ public class VistaAlumnos extends JFrame {
 		comboBoxNacionalidad.setModel(new DefaultComboBoxModel(new String[] {"ESPA\u00D1OLA", "OTRO"}));
 		
 		btnAnadir = new JButton("A\u00D1ADIR");
+		btnAnadir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controlador.addAlumnos();
+			}
+		});
 		
 		btnBorrar = new JButton("BORRAR");
+		btnBorrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controlador.borrarAlumnos();
+				btnActualizar.setEnabled(false);
+				btnBorrar.setEnabled(false);
+			}
+		});
 		btnBorrar.setEnabled(false);
 		
 		btnActualizar = new JButton("ACTUALIZAR");
@@ -117,6 +140,11 @@ public class VistaAlumnos extends JFrame {
 		btnSubirFichero = new JButton("SUBIR DEL FICHERO A LA BBDD");
 		
 		btnBorrarTodo = new JButton("BORRAR TODO");
+		btnBorrarTodo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controlador.borrarTodosAlumnos();
+			}
+		});
 		
 		btnCopiarFichero = new JButton("COPIAR A UN FICHERO");
 		GroupLayout gl_panel = new GroupLayout(panel);
@@ -202,6 +230,14 @@ public class VistaAlumnos extends JFrame {
 		);
 		
 		tableAlumnos = new JTable();
+		tableAlumnos.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				btnBorrar.setEnabled(true);
+				btnActualizar.setEnabled(true);
+				controlador.verInformacionRegistroSeleccionado();
+			}
+		});
 		scrollPane.setViewportView(tableAlumnos);
 		panel.setLayout(gl_panel);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
@@ -238,5 +274,153 @@ public class VistaAlumnos extends JFrame {
 		this.tableAlumnos = tableAlumnos;
 	}
 	
+	public void crearTablaAlumnos(ArrayList<Alumnos> resultados) {
+		System.out.println(resultados);
+		this.resultados=resultados;
+		DefaultTableModel model = new DefaultTableModel() {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+
+		model.addColumn("COD");
+		model.addColumn("DNI");
+		model.addColumn("NOMBRE");
+		model.addColumn("APELLIDO");
+		model.addColumn("NACIONALIDAD");
+		model.addColumn("TELEFONO");
+
+		for (int i = 0; i < resultados.size(); i++) {
+			model.addRow(new String[] { String.valueOf(resultados.get(i).getCod()), resultados.get(i).getDni(),
+					resultados.get(i).getNombre(), resultados.get(i).getApellido(), resultados.get(i).getNacionalidad(),
+					String.valueOf(resultados.get(i).getTelefono()) });
+		}
+
+		this.getTableAlumnos().setModel(model);
+		
+	}
+	
+	public void mostrarDatosAlumno(String cod) {
+		Alumnos datosAlumno=null;
+		for (int i = 0; i < resultados.size(); i++) {
+			if(resultados.get(i).getCod()==Integer.parseInt(cod)){
+				txtNombre.setText(resultados.get(i).getNombre());
+				txtApellido.setText(resultados.get(i).getApellido());
+				txtDNI.setText(resultados.get(i).getDni());
+				txtTelefono.setText(String.valueOf(resultados.get(i).getTelefono()));
+				comboBoxNacionalidad.setSelectedItem(resultados.get(i).getNacionalidad());
+				break;
+			}
+			
+		}
+		
+		
+	}
+	
+	public String getTxtNombre() {
+		return txtNombre.getText();
+	}
+
+	public void setTxtNombre(JTextField txtNombre) {
+		this.txtNombre = txtNombre;
+	}
+
+	public String getTxtDNI() {
+		return txtDNI.getText();
+	}
+
+	public void setTxtDNI(JTextField txtDNI) {
+		this.txtDNI = txtDNI;
+	}
+
+	public int getTxtTelefono() {
+		try{
+			return Integer.parseInt(txtTelefono.getText());
+		}catch(Exception e){
+			this.generarRespuesta("El número de teléfono ha de ser un número.");
+			return -1;
+		}
+	}
+	
+	
+	public void generarRespuesta(String respuesta) {
+		JOptionPane.showMessageDialog(null, respuesta);
+		
+	}
+	
+
+	public void setTxtTelefono(JTextField txtTelefono) {
+		this.txtTelefono = txtTelefono;
+	}
+
+	public String getTxtApellido() {
+		return txtApellido.getText();
+	}
+
+	public void setTxtApellido(JTextField txtApellido) {
+		this.txtApellido = txtApellido;
+	}
+
+	public String getComboBoxNacionalidad() {
+		return comboBoxNacionalidad.getSelectedItem().toString();
+	}
+
+	public void setComboBoxNacionalidad(JComboBox comboBoxNacionalidad) {
+		this.comboBoxNacionalidad = comboBoxNacionalidad;
+	}
+
+	public JButton getBtnActualizar() {
+		return btnActualizar;
+	}
+
+	public void setBtnActualizar(JButton btnActualizar) {
+		this.btnActualizar = btnActualizar;
+	}
+
+	public JButton getBtnBorrar() {
+		return btnBorrar;
+	}
+
+	public void setBtnBorrar(JButton btnBorrar) {
+		this.btnBorrar = btnBorrar;
+	}
+
+	public JButton getBtnAnadir() {
+		return btnAnadir;
+	}
+
+	public void setBtnAnadir(JButton btnAnadir) {
+		this.btnAnadir = btnAnadir;
+	}
+
+	public JButton getBtnBorrarTodo() {
+		return btnBorrarTodo;
+	}
+
+	public void setBtnBorrarTodo(JButton btnBorrarTodo) {
+		this.btnBorrarTodo = btnBorrarTodo;
+	}
+
+	public JButton getBtnCopiarFichero() {
+		return btnCopiarFichero;
+	}
+
+	public void setBtnCopiarFichero(JButton btnCopiarFichero) {
+		this.btnCopiarFichero = btnCopiarFichero;
+	}
+
+	public JButton getBtnSubirFichero() {
+		return btnSubirFichero;
+	}
+
+	public void setBtnSubirFichero(JButton btnSubirFichero) {
+		this.btnSubirFichero = btnSubirFichero;
+	}
+
+	public void actualizarTablaAlumnos(ArrayList<Alumnos> arrayListAlumnos) {
+		this.crearTablaAlumnos(arrayListAlumnos);
+		
+	}
 	
 }

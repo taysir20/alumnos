@@ -1,4 +1,4 @@
-package Entidad;
+package Modelo;
 
 public class Alumnos {
 	private int cod;
@@ -11,6 +11,14 @@ public class Alumnos {
 	public Alumnos(int cod, String nombre, String apellido, String dni, String nacionalidad, int telefono) {
 		super();
 		this.cod = cod;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.dni = dni;
+		this.nacionalidad = nacionalidad;
+		this.telefono = telefono;
+	}
+	
+	public Alumnos(String nombre, String apellido, String dni, String nacionalidad, int telefono) {
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.dni = dni;
