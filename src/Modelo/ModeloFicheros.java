@@ -37,20 +37,33 @@ public class ModeloFicheros implements InterfaceAccesoDatos { //Heredamos del pa
 
 	@Override
 	public ArrayList<Alumnos> recogerDatosBBDD() {
+		System.out.println("pato");
+		miFichero = new File("src/Ficheros/Datos/DatosTabla.txt");
+		try {
+			leerFichero = new FileReader(miFichero);
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		BufferedReader br = new BufferedReader(leerFichero);
 		String lineaAlumno="";
+		resultados = new ArrayList<>();
 		try {
-			resultados = new ArrayList<Alumnos>();
+			//resultados = new ArrayList<Alumnos>();
+
+			
+			
 			while((lineaAlumno=br.readLine()) != null){
 				StringTokenizer st = new StringTokenizer(lineaAlumno,"-");
 				ArrayList<String> datosPorCadaAlumno = new ArrayList<String>();
 			    while (st.hasMoreTokens()){
 			        datosPorCadaAlumno.add(st.nextToken());
 				}
-				alumno = new Alumnos(Integer.parseInt(datosPorCadaAlumno.get(0)), datosPorCadaAlumno.get(1), datosPorCadaAlumno.get(2), datosPorCadaAlumno.get(3), datosPorCadaAlumno.get(4), Integer.parseInt(datosPorCadaAlumno.get(5)));
+				alumno = new Alumnos(Integer.parseInt(datosPorCadaAlumno.get(0)), datosPorCadaAlumno.get(2).toUpperCase(), datosPorCadaAlumno.get(3).toUpperCase(), datosPorCadaAlumno.get(1).toUpperCase(), datosPorCadaAlumno.get(4).toUpperCase(), Integer.parseInt(datosPorCadaAlumno.get(5)));
 				resultados.add(alumno);
 
 			}
+		
 		} catch (IOException e) {
 			
 			e.printStackTrace();
@@ -60,24 +73,47 @@ public class ModeloFicheros implements InterfaceAccesoDatos { //Heredamos del pa
 
 	@Override
 	public int addUnAlumno(Alumnos alumno) {
-		String ultimoAlumno="";
 		int respuesta=0;
+		int cod;
 		try {
 			miFichero = new File("src/Ficheros/Datos/DatosTabla.txt");
 			leerFichero = new FileReader(miFichero);
 			 BufferedReader br = new BufferedReader(leerFichero);
-			 String substring="";
-			 
+			 String lineaCompletaAlumno="";
+			 String ultimoCod="";
+			 StringTokenizer codUltimoAlumno=null;
+			 while((lineaCompletaAlumno=br.readLine())!=null){
+				 codUltimoAlumno = new StringTokenizer(lineaCompletaAlumno,"-");
+				 ultimoCod=codUltimoAlumno.nextToken();
+				
+			 }
+			if(ultimoCod==""){
+				cod=1;
+				
+			}else{
+				cod =Integer.parseInt(ultimoCod);
+				cod++;
+			}
+			
+		boolean esIgual=false;
+		
+			for (int i = 0; i < resultados.size(); i++) {
+				
+					if(String.valueOf(alumno.getDni()).equals(String.valueOf(resultados.get(i).getDni()))){
+						esIgual=true;
+					}
+								
+			}
+			if(esIgual==false){
+				FileWriter fw = new FileWriter(miFichero, true);
+			     BufferedWriter bw = new BufferedWriter(fw);
+			     PrintWriter pw = new PrintWriter(bw);
+			        pw.println(String.valueOf(cod) + "-" + alumno.getDni() + "-" + alumno.getNombre() + "-" + alumno.getApellido() + "-" + alumno.getNacionalidad() + "-" + String.valueOf(alumno.getTelefono()));
+			        pw.close();
+			        respuesta=1;		
+			}
 			 
 			
-			
-			 FileWriter fw = new FileWriter(miFichero, true);
-		     BufferedWriter bw = new BufferedWriter(fw);
-		     PrintWriter pw = new PrintWriter(bw);
-		        
-		        pw.println(String.valueOf(alumno.getCod()) + "-" + alumno.getDni() + "-" + alumno.getNombre() + "-" + alumno.getApellido() + "-" + alumno.getNacionalidad() + "-" + String.valueOf(alumno.getTelefono()));
-		        pw.close();
-		        respuesta=1;
 		} catch (IOException e) {
 			respuesta=0;
 			e.printStackTrace();
@@ -89,16 +125,106 @@ public class ModeloFicheros implements InterfaceAccesoDatos { //Heredamos del pa
 
 	@Override
 	public int deleteAlumno(String cod) {
-		return 0;
-		// TODO Auto-generated method stub
+		int respuesta=0;
+		try {
+			miFichero = new File("src/Ficheros/Datos/DatosTabla.txt");
+			leerFichero = new FileReader(miFichero);
+			BufferedReader br = new BufferedReader(leerFichero);
+			 String lineaCompletaAlumno="";
+			 StringTokenizer codTokenizer=null;
+			 ArrayList<String> sobreescribir = new ArrayList<String>();
+			 String codigo="";
+			 
+			 while((lineaCompletaAlumno=br.readLine())!=null){
+				
+				 codTokenizer = new StringTokenizer(lineaCompletaAlumno,"-");
+				if(!String.valueOf(cod).equals(codTokenizer.nextToken())){
+					 sobreescribir.add(lineaCompletaAlumno);    
+				}
+				 
+			 }
+			 FileWriter fw = new FileWriter(miFichero,false);
+		     BufferedWriter bw = new BufferedWriter(fw);
+		     PrintWriter pw = new PrintWriter(bw);
+		     for (int i = 0; i < sobreescribir.size(); i++) {
+				pw.println(sobreescribir.get(i));
+				 
+			}
+		     pw.close();
+		     respuesta=1;
+			
+			
+		} catch (IOException e) {
+			respuesta=0;
+			e.printStackTrace();
+		}
+		 
+		return respuesta;
+		
 		
 	}
 
 	@Override
 	public int deleteAllAlumnos() {
-		return 0;
-		// TODO Auto-generated method stub
+		int respuesta=0;
+		
+		
+			miFichero = new File("src/Ficheros/Datos/DatosTabla.txt");
+			try {
+				FileWriter fw = new FileWriter(miFichero);
+				BufferedWriter bw = new BufferedWriter(fw);
+				PrintWriter pw = new PrintWriter(bw);
+				pw.close();
+				respuesta=1;
+			} catch (IOException e) {
+				respuesta=0;
+				e.printStackTrace();
+			}
+		
+		return respuesta;
+		
 		
 	}
+
+	@Override
+	public int actualizarJugadores(String cod, Alumnos alumno) {
+		int respuesta=0;
+		try {
+			miFichero = new File("src/Ficheros/Datos/DatosTabla.txt");
+			leerFichero = new FileReader(miFichero);
+			BufferedReader br = new BufferedReader(leerFichero);
+			 String lineaCompletaAlumno="";
+			 StringTokenizer codTokenizer=null;
+			 ArrayList<String> sobreescribir = new ArrayList<String>();
+			 String codigo="";
+			 
+			 while((lineaCompletaAlumno=br.readLine())!=null){
+				
+				 codTokenizer = new StringTokenizer(lineaCompletaAlumno,"-");
+				if(!String.valueOf(cod).equals(codTokenizer.nextToken())){
+					 sobreescribir.add(lineaCompletaAlumno);    
+				}else{
+					sobreescribir.add(String.valueOf(alumno.getCod()) + "-" + alumno.getDni() + "-" + alumno.getNombre()  + "-" + alumno.getApellido() + "-" + alumno.getNacionalidad() + "-" + String.valueOf(alumno.getTelefono()));
+				}
+				 
+			 }
+			 FileWriter fw = new FileWriter(miFichero,false);
+		     BufferedWriter bw = new BufferedWriter(fw);
+		     PrintWriter pw = new PrintWriter(bw);
+		     for (int i = 0; i < sobreescribir.size(); i++) {
+				pw.println(sobreescribir.get(i));
+				 
+			}
+		     pw.close();
+		     respuesta=1;
+			
+			
+		} catch (IOException e) {
+			respuesta=0;
+			e.printStackTrace();
+		}
+		return respuesta;
+	}
+
 
 }

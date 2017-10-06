@@ -1,7 +1,9 @@
 package Modelo;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -92,6 +94,7 @@ public class ModeloSQL implements InterfaceAccesoDatos{
 	}
 	@Override
 	public String AccesoBBDD() {
+		System.out.println("tuvilllaaaa");
 		String aviso;
 		try {
 			leerFicheroBBDD();
@@ -115,6 +118,8 @@ public class ModeloSQL implements InterfaceAccesoDatos{
 
 	@Override
 	public int addUnAlumno(Alumnos alumno) {
+		System.out.println("huoooleee");
+		System.out.println(alumno);
 		int respuesta=0;
 		try {
 			PreparedStatement pstmt;
@@ -126,9 +131,12 @@ public class ModeloSQL implements InterfaceAccesoDatos{
 			pstmt.setInt(4, alumno.getTelefono());
 			pstmt.setString(5, alumno.getNacionalidad().toUpperCase());
 			respuesta=pstmt.executeUpdate();
+					
+			
+			
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			
 		}
 		return respuesta;
 
@@ -175,9 +183,32 @@ public class ModeloSQL implements InterfaceAccesoDatos{
 	}
 
 
+	@Override
+	public int actualizarJugadores(String cod, Alumnos alumno) {
+		int respuesta=0;
+		try {
+			PreparedStatement pstmt;
+			String query="UPDATE `alumnos` SET `dni` = ?,`nombre` = ?, `apellido` = ?"
+					+ ", `nacionalidad` = ?, `telefono` = ? WHERE `alumnos`.`cod` = '" + cod + "'";
+			pstmt = conexion.prepareStatement(query);
+			pstmt.setString(1, alumno.getDni().toUpperCase());
+			pstmt.setString(2, alumno.getNombre().toUpperCase());
+			pstmt.setString(3, alumno.getApellido().toUpperCase());
+			pstmt.setString(4, alumno.getNacionalidad().toUpperCase());
+			pstmt.setInt(5, alumno.getTelefono());
+			respuesta=pstmt.executeUpdate();
+			System.out.println(respuesta);
+			respuesta=1;
+		} catch (SQLException e) {
+			respuesta=0;
+			e.printStackTrace();
+		}
 
-	
-	
+		return respuesta;
+	}
+
+
+
 	
 	
 }

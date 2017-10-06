@@ -8,4 +8,5 @@ public interface InterfaceAccesoDatos {
 	public int addUnAlumno(Alumnos alumno);
 	public int deleteAlumno(String cod);
 	public int deleteAllAlumnos();
+	public int actualizarJugadores(String cod,Alumnos alumno);
 }

@@ -22,8 +22,7 @@ public class Controlador {
 
 	public void crearTablaAlumnos() {
 
-		 modeloPrincipal.recogerDatosBBDD();
-		
+		modeloPrincipal.recogerDatosBBDD();
 
 	}
 
@@ -42,50 +41,78 @@ public class Controlador {
 
 	}
 
-	public String tipoDeDatos() {
-		String[] tipoBBDD = { "SQL", "FICHEROS", };
-		return (String) JOptionPane.showInputDialog(null, "Seleccione el tipo de acceso a datos", "Tipo",
-				JOptionPane.DEFAULT_OPTION, null, tipoBBDD, tipoBBDD[0]); // por
-																			// defecto
-																			// nos
-																			// conecta
-																			// a
-																			// SQL
-
-	}
+	
 
 	public void addAlumnos() {
-		if (this.vistaAlumnos.getTxtNombre().replaceAll(" ", "").isEmpty()
-				|| this.vistaAlumnos.getTxtApellido().replaceAll(" ", "").isEmpty()
-				|| this.vistaAlumnos.getTxtDNI().replaceAll(" ", "").isEmpty()
-				|| this.vistaAlumnos.getComboBoxNacionalidad().replaceAll(" ", "").isEmpty()
-				|| this.vistaAlumnos.getTxtTelefono() == 0) {
-			this.vistaAlumnos.generarRespuesta("Todos los campos han de estar rellenos.");
-		} else {
-			this.modeloPrincipal.addAlumnos(this.vistaAlumnos.getTxtNombre(), this.vistaAlumnos.getTxtApellido(),
-					this.vistaAlumnos.getTxtDNI(), this.vistaAlumnos.getComboBoxNacionalidad(),
-					this.vistaAlumnos.getTxtTelefono());
-			this.vistaAlumnos.getBtnActualizar().setEnabled(false);
-			this.vistaAlumnos.getBtnBorrar().setEnabled(false);
+		if (this.vistaAlumnos.getTxtTelefono() != -1) {
+			if (this.vistaAlumnos.getTxtNombre().replaceAll(" ", "").isEmpty()
+					|| this.vistaAlumnos.getTxtApellido().replaceAll(" ", "").isEmpty()
+					|| this.vistaAlumnos.getTxtDNI().replaceAll(" ", "").isEmpty()
+					|| this.vistaAlumnos.getComboBoxNacionalidad().replaceAll(" ", "").isEmpty()) {
+				this.vistaAlumnos.generarRespuesta("Todos los campos han de estar rellenos.");
+			} else {
+				this.modeloPrincipal.addAlumnos(this.vistaAlumnos.getTxtNombre(), this.vistaAlumnos.getTxtApellido(),
+						this.vistaAlumnos.getTxtDNI(), this.vistaAlumnos.getComboBoxNacionalidad(),
+						this.vistaAlumnos.getTxtTelefono());
+				this.vistaAlumnos.getBtnActualizar().setEnabled(false);
+				this.vistaAlumnos.getBtnBorrar().setEnabled(false);
+			}
 		}
 
 	}
 
 	public void verInformacionRegistroSeleccionado() {
-		cod=String.valueOf(this.vistaAlumnos.getTableAlumnos().getValueAt(this.vistaAlumnos.getTableAlumnos().getSelectedRow(), 0));
+		cod = String.valueOf(this.vistaAlumnos.getTableAlumnos()
+				.getValueAt(this.vistaAlumnos.getTableAlumnos().getSelectedRow(), 0));
 		this.vistaAlumnos.mostrarDatosAlumno(cod);
-		
+
 	}
 
 	public void borrarAlumnos() {
 		modeloPrincipal.borrarAlumnos(cod);
-		
+
 	}
 
 	public void borrarTodosAlumnos() {
 		modeloPrincipal.borrarTodosAlumnos();
+
+	}
+
+	public void intercambioDatos() {
+		modeloPrincipal.intercambioDatos();
+		
+		
+		
+	}
+
+	public void recogerDatosCualquierFicheroAbbdd(String ruta) {
+		System.out.println("entra al controlador");
+		modeloPrincipal.recogerDatosCualquierFichero(ruta);
+		
+	}
+
+	public void actualizarDatosAlumnos() {
+		if (this.vistaAlumnos.getTxtTelefono() != -1) {
+			if (this.vistaAlumnos.getTxtNombre().replaceAll(" ", "").isEmpty()
+					|| this.vistaAlumnos.getTxtApellido().replaceAll(" ", "").isEmpty()
+					|| this.vistaAlumnos.getTxtDNI().replaceAll(" ", "").isEmpty()
+					|| this.vistaAlumnos.getComboBoxNacionalidad().replaceAll(" ", "").isEmpty()) {
+				this.vistaAlumnos.generarRespuesta("Todos los campos han de estar rellenos.");
+			} else {
+				this.modeloPrincipal.actualizarDatosAlumnos(cod,this.vistaAlumnos.getTxtNombre(), this.vistaAlumnos.getTxtApellido(),
+						this.vistaAlumnos.getTxtDNI(), this.vistaAlumnos.getComboBoxNacionalidad(),
+						this.vistaAlumnos.getTxtTelefono());
+				this.vistaAlumnos.getBtnActualizar().setEnabled(false);
+				this.vistaAlumnos.getBtnBorrar().setEnabled(false);
+			}
+		}
+		
+		
+		
+		
+		
+		
 		
 	}
 
 }
-

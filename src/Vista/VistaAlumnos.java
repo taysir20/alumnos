@@ -6,7 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import Controlador.Controlador;
 import Modelo.Alumnos;
@@ -24,13 +26,19 @@ import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JButton;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class VistaAlumnos extends JFrame {
 
@@ -51,6 +59,8 @@ public class VistaAlumnos extends JFrame {
 	private JButton btnSubirFichero;
 	private JTable tableAlumnos;
 	private ArrayList<Alumnos> resultados;
+	private JTextField txtBuscadorDni;
+	private TableRowSorter trsfiltro;
 
 
 	
@@ -135,9 +145,19 @@ public class VistaAlumnos extends JFrame {
 		btnBorrar.setEnabled(false);
 		
 		btnActualizar = new JButton("ACTUALIZAR");
+		btnActualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controlador.actualizarDatosAlumnos();
+			}
+		});
 		btnActualizar.setEnabled(false);
 		
-		btnSubirFichero = new JButton("SUBIR DEL FICHERO A LA BBDD");
+		btnSubirFichero = new JButton("VOLCAR DATOS DE CUALQUIER FICHERO A UNA BBDD");
+		btnSubirFichero.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				escogerFichero();
+			}
+		});
 		
 		btnBorrarTodo = new JButton("BORRAR TODO");
 		btnBorrarTodo.addActionListener(new ActionListener() {
@@ -146,7 +166,29 @@ public class VistaAlumnos extends JFrame {
 			}
 		});
 		
-		btnCopiarFichero = new JButton("COPIAR A UN FICHERO");
+		btnCopiarFichero = new JButton("VOLCAR DATOS");
+		btnCopiarFichero.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controlador.intercambioDatos();
+			}
+		});
+		
+		txtBuscadorDni = new JTextField();
+		txtBuscadorDni.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String cadena = (txtBuscadorDni.getText());
+				txtBuscadorDni.setText(cadena);
+    			repaint();
+    			filtro();
+    			}
+    			});
+    			
+		
+		
+		txtBuscadorDni.setColumns(10);
+		
+		JLabel lblBuscarPorDni = new JLabel("BUSCAR POR DNI");
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -155,7 +197,7 @@ public class VistaAlumnos extends JFrame {
 						.addGroup(gl_panel.createSequentialGroup()
 							.addContainerGap()
 							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
+								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE)
 								.addComponent(label_1)
 								.addGroup(gl_panel.createSequentialGroup()
 									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
@@ -175,29 +217,44 @@ public class VistaAlumnos extends JFrame {
 										.addComponent(txtDNI, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE))
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-										.addComponent(txtTelefono, GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
-										.addComponent(comboBoxNacionalidad, 0, 264, Short.MAX_VALUE)))
+										.addComponent(txtTelefono, GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
+										.addComponent(comboBoxNacionalidad, 0, 299, Short.MAX_VALUE)))
 								.addGroup(gl_panel.createSequentialGroup()
 									.addComponent(btnAnadir)
 									.addGap(18)
 									.addComponent(btnBorrar, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
 									.addGap(18)
 									.addComponent(btnActualizar)
-									.addPreferredGap(ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
 									.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
 										.addComponent(btnSubirFichero, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 										.addGroup(gl_panel.createSequentialGroup()
 											.addComponent(btnBorrarTodo)
 											.addGap(18)
 											.addComponent(btnCopiarFichero))))))
-						.addComponent(label))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_panel.createSequentialGroup()
+									.addComponent(label)
+									.addPreferredGap(ComponentPlacement.RELATED, 333, Short.MAX_VALUE))
+								.addGroup(gl_panel.createSequentialGroup()
+									.addContainerGap()
+									.addComponent(lblBuscarPorDni)
+									.addGap(18)))
+							.addComponent(txtBuscadorDni, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addComponent(label)
-					.addGap(29)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(label)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(37)
+							.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(txtBuscadorDni, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblBuscarPorDni))))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 220, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(label_1)
@@ -217,7 +274,7 @@ public class VistaAlumnos extends JFrame {
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label_4)
 						.addComponent(txtDNI, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
 					.addComponent(btnSubirFichero)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
@@ -298,6 +355,8 @@ public class VistaAlumnos extends JFrame {
 		}
 
 		this.getTableAlumnos().setModel(model);
+		trsfiltro = new TableRowSorter(tableAlumnos.getModel());
+		tableAlumnos.setRowSorter(trsfiltro);
 		
 	}
 	
@@ -339,8 +398,8 @@ public class VistaAlumnos extends JFrame {
 			return Integer.parseInt(txtTelefono.getText());
 		}catch(Exception e){
 			this.generarRespuesta("El número de teléfono ha de ser un número.");
-			return -1;
 		}
+		return -1;
 	}
 	
 	
@@ -422,5 +481,60 @@ public class VistaAlumnos extends JFrame {
 		this.crearTablaAlumnos(arrayListAlumnos);
 		
 	}
+	public String tipoDeDatos() {
+		String[] tipoBBDD = { "SQL", "FICHEROS", };
+		return (String) JOptionPane.showInputDialog(null, "Seleccione el tipo de acceso a datos", "Tipo",
+				JOptionPane.DEFAULT_OPTION, null, tipoBBDD, tipoBBDD[0]); // por
+																			// defecto
+																			// nos
+																			// conecta
+																			// a
+																			// SQL
+
+	}
 	
+	public void filtro() {
+		trsfiltro.setRowFilter(RowFilter.regexFilter(txtBuscadorDni.getText().toUpperCase(), 1)); //////metodo de filtro de datos
+		}
+
+	public void escogerFichero() {
+		try{
+			JFileChooser explorador;
+			File archivo;
+			String ruta;
+			explorador = new JFileChooser("src/Ficheros/Datos");
+			explorador.setDialogTitle("Abrir documento...");
+			explorador.setFileFilter(new FileNameExtensionFilter("TXT - Microsoft", "txt"));
+			//Muestro un dialogo sin pasarle parent con el boton de abrir
+			int seleccion = explorador.showDialog(null, "Abrir!");
+			  
+			archivo = explorador.getSelectedFile();
+
+			//y guardar una ruta
+			ruta = archivo.getPath();
+			//analizamos la respuesta
+			switch(seleccion) {
+			case JFileChooser.APPROVE_OPTION:
+			 //seleccionó abrir
+				controlador.recogerDatosCualquierFicheroAbbdd(ruta);
+			 break;
+
+			case JFileChooser.CANCEL_OPTION:
+			 //dio click en cancelar o cerro la ventana
+			 break;
+
+			case JFileChooser.ERROR_OPTION:
+			 //llega aqui si sucede un error
+			 break;
+			
+			}
+			
+			
+			
+		
+		}catch(Exception e){
+			
+		}
+}
+		
 }

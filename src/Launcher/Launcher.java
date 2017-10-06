@@ -18,7 +18,7 @@ public class Launcher {
 		controlador.setVistaPrincipal(vistaAlumnos);
 		controlador.setModeloPrincipal(modeloPrincipal);
 		modeloPrincipal.setVistaPrincipal(vistaAlumnos);
-		modeloPrincipal.NuevoDato(controlador.tipoDeDatos());
+		modeloPrincipal.NuevoDato(vistaAlumnos.tipoDeDatos());
 		controlador.conexionDatos();
 		controlador.crearTablaAlumnos();
 		vistaAlumnos.setVisible(true);
