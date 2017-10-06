@@ -87,7 +87,7 @@ public class Controlador {
 
 	public void recogerDatosCualquierFicheroAbbdd(String ruta) {
 		System.out.println("entra al controlador");
-		modeloPrincipal.recogerDatosCualquierFichero(ruta);
+		//modeloPrincipal.recogerDatosCualquierFichero(ruta);
 		
 	}
 
