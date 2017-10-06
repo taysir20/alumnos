@@ -142,7 +142,7 @@ public class ModeloPrincipal {
 	
 //EXTRA. ESTA PARTE ES UN AÑADIDO PARA PODER ESCOGER TU EL FICHERO QUE QUIEROS SUBIR A UNA BBDD. 
 	//LA SEPARO DEL RESTO DEL CÓDIGO POR NO SÉ EXACTAMENTE COMO PODER IMPLEMENTARLA MEJOR
-	public void recogerDatosCualquierFichero(String ruta) {
+	/*public void recogerDatosCualquierFichero(String ruta) {
 		System.out.println("entra al modelo");
 		InterfaceAccesoDatos auxiliar = new ModeloSQL();
 		auxiliar.AccesoBBDD();
@@ -177,7 +177,7 @@ public class ModeloPrincipal {
 			ex.printStackTrace();
 		}
 	}
-	
+	*/
 	
 
 	

@@ -498,6 +498,7 @@ public class VistaAlumnos extends JFrame {
 		}
 
 	public void escogerFichero() {
+		/*
 		try{
 			JFileChooser explorador;
 			File archivo;
@@ -535,6 +536,7 @@ public class VistaAlumnos extends JFrame {
 		}catch(Exception e){
 			
 		}
+		*/
 }
 		
 }
