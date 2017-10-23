@@ -44,7 +44,7 @@ public class VistaAlumnos extends JFrame {
 
 	private Controlador controlador;
 	private ModeloPrincipal modeloPrincipal;
-	
+	private ArrayList<String> arrCurso;
 	private JPanel contentPane;
 	private JTextField txtNombre;
 	private JTextField txtDNI;
@@ -61,6 +61,8 @@ public class VistaAlumnos extends JFrame {
 	private ArrayList<Alumnos> resultados;
 	private JTextField txtBuscadorDni;
 	private TableRowSorter trsfiltro;
+	private JButton btnAbrirVentanaCursos;
+	public JComboBox comboBoxCurso;
 
 
 	
@@ -138,8 +140,8 @@ public class VistaAlumnos extends JFrame {
 		btnBorrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controlador.borrarAlumnos();
-				btnActualizar.setEnabled(false);
-				btnBorrar.setEnabled(false);
+				btnActualizar.setEnabled(true);
+				btnBorrar.setEnabled(true);
 			}
 		});
 		btnBorrar.setEnabled(false);
@@ -189,6 +191,20 @@ public class VistaAlumnos extends JFrame {
 		txtBuscadorDni.setColumns(10);
 		
 		JLabel lblBuscarPorDni = new JLabel("BUSCAR POR DNI");
+		
+		comboBoxCurso = new JComboBox();
+
+		arrCurso= new ArrayList<String>();
+		
+		
+		JLabel lblCurso = new JLabel("Curso:");
+		
+		btnAbrirVentanaCursos = new JButton("ABRIR VENTANA CURSOS");
+		btnAbrirVentanaCursos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controlador.abrirVentanaCursos();
+			}
+		});
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -198,33 +214,39 @@ public class VistaAlumnos extends JFrame {
 							.addContainerGap()
 							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE)
-								.addComponent(label_1)
 								.addGroup(gl_panel.createSequentialGroup()
 									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
 										.addComponent(label_2, GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
 										.addComponent(label_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 										.addComponent(label_4, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 									.addGap(10)
-									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_panel.createSequentialGroup()
-											.addComponent(txtNombre, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE)
-											.addGap(18)
-											.addComponent(label_5, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE))
+									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
 										.addGroup(gl_panel.createSequentialGroup()
 											.addComponent(txtApellido, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE)
 											.addGap(18)
 											.addComponent(label_6, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
-										.addComponent(txtDNI, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE))
+										.addGroup(gl_panel.createSequentialGroup()
+											.addComponent(txtDNI, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE)
+											.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addComponent(lblCurso, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE))
+										.addGroup(gl_panel.createSequentialGroup()
+											.addComponent(txtNombre, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE)
+											.addGap(18)
+											.addComponent(label_5, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)))
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 										.addComponent(txtTelefono, GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
-										.addComponent(comboBoxNacionalidad, 0, 299, Short.MAX_VALUE)))
+										.addComponent(comboBoxNacionalidad, 0, 299, Short.MAX_VALUE)
+										.addComponent(comboBoxCurso, GroupLayout.PREFERRED_SIZE, 299, GroupLayout.PREFERRED_SIZE)))
 								.addGroup(gl_panel.createSequentialGroup()
-									.addComponent(btnAnadir)
-									.addGap(18)
-									.addComponent(btnBorrar, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
-									.addGap(18)
-									.addComponent(btnActualizar)
+									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+										.addGroup(gl_panel.createSequentialGroup()
+											.addComponent(btnAnadir)
+											.addGap(18)
+											.addComponent(btnBorrar, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
+											.addGap(18)
+											.addComponent(btnActualizar))
+										.addComponent(btnAbrirVentanaCursos, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 									.addPreferredGap(ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
 									.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
 										.addComponent(btnSubirFichero, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -241,7 +263,8 @@ public class VistaAlumnos extends JFrame {
 									.addContainerGap()
 									.addComponent(lblBuscarPorDni)
 									.addGap(18)))
-							.addComponent(txtBuscadorDni, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(txtBuscadorDni, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE))
+						.addComponent(label_1))
 					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
@@ -258,7 +281,7 @@ public class VistaAlumnos extends JFrame {
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 220, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(label_1)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGap(11)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label_3)
 						.addComponent(label_5)
@@ -273,10 +296,18 @@ public class VistaAlumnos extends JFrame {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label_4)
-						.addComponent(txtDNI, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
-					.addComponent(btnSubirFichero)
-					.addPreferredGap(ComponentPlacement.RELATED)
+						.addComponent(txtDNI, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(comboBoxCurso, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblCurso))
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+							.addComponent(btnSubirFichero)
+							.addPreferredGap(ComponentPlacement.RELATED))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(41)
+							.addComponent(btnAbrirVentanaCursos)
+							.addPreferredGap(ComponentPlacement.RELATED)))
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnAnadir)
 						.addComponent(btnBorrar)
@@ -314,6 +345,15 @@ public class VistaAlumnos extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 	}
 
+	public String getComboBoxCurso() {
+		
+		return comboBoxCurso.getSelectedItem().toString();
+	}
+
+	public void setComboBoxCurso(JComboBox comboBoxCurso) {
+		this.comboBoxCurso = comboBoxCurso;
+	}
+
 	public void setControlador(Controlador controlador) {
 		this.controlador=controlador;
 		
@@ -332,7 +372,7 @@ public class VistaAlumnos extends JFrame {
 	}
 	
 	public void crearTablaAlumnos(ArrayList<Alumnos> resultados) {
-		System.out.println(resultados);
+		System.out.println("los losalumnos" + resultados);
 		this.resultados=resultados;
 		DefaultTableModel model = new DefaultTableModel() {
 			@Override
@@ -347,11 +387,12 @@ public class VistaAlumnos extends JFrame {
 		model.addColumn("APELLIDO");
 		model.addColumn("NACIONALIDAD");
 		model.addColumn("TELEFONO");
+		model.addColumn("CURSO");
 
 		for (int i = 0; i < resultados.size(); i++) {
 			model.addRow(new String[] { String.valueOf(resultados.get(i).getCod()), resultados.get(i).getDni(),
 					resultados.get(i).getNombre(), resultados.get(i).getApellido(), resultados.get(i).getNacionalidad(),
-					String.valueOf(resultados.get(i).getTelefono()) });
+					String.valueOf(resultados.get(i).getTelefono()),String.valueOf(resultados.get(i).getCurso().getCurso())});
 		}
 
 		this.getTableAlumnos().setModel(model);
@@ -496,6 +537,40 @@ public class VistaAlumnos extends JFrame {
 	public void filtro() {
 		trsfiltro.setRowFilter(RowFilter.regexFilter(txtBuscadorDni.getText().toUpperCase(), 1)); //////metodo de filtro de datos
 		}
+	
+	
+	public void actualizarCursos(String curso){
+		this.arrCurso.add(curso);
+		String cursos[]= new String[arrCurso.size()];
+		for (int i = 0; i < arrCurso.size(); i++) {
+			cursos[i]=arrCurso.get(i);
+			
+		}
+		comboBoxCurso.setModel(new DefaultComboBoxModel(cursos));
+	}
+	
+	
+	public void borrarCursos(String curso){
+		ArrayList<String> aux = new ArrayList<String>();
+		for (int i = 0; i < arrCurso.size(); i++) {
+			if(arrCurso.get(i)==curso){
+				arrCurso.remove(i);
+			}else{
+				aux.add(arrCurso.get(i));
+			}
+			
+			
+		}
+		
+		String cursos[]= new String[aux.size()];
+		
+		for (int i = 0; i < aux.size(); i++) {
+			cursos[i]= aux.get(i);
+				
+		}
+		
+		comboBoxCurso.setModel(new DefaultComboBoxModel(cursos));
+	}
 
 	public void escogerFichero() {
 		/*
@@ -538,5 +613,6 @@ public class VistaAlumnos extends JFrame {
 		}
 		*/
 }
-		
+
+	
 }

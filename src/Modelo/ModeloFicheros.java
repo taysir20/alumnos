@@ -16,7 +16,10 @@ public class ModeloFicheros implements InterfaceAccesoDatos { //Heredamos del pa
 	FileReader leerFichero;
 	File miFichero;
 	ArrayList<Alumnos> resultados = new ArrayList<Alumnos>();
+	ArrayList<Cursos> resultados2 = new ArrayList<Cursos>();
+	
 	private Alumnos alumno = null;
+	private Cursos curso = null;
 	
 	@Override
 	public String AccesoBBDD() {
@@ -36,9 +39,69 @@ public class ModeloFicheros implements InterfaceAccesoDatos { //Heredamos del pa
 	}
 
 	@Override
-	public ArrayList<Alumnos> recogerDatosBBDD() {
+	public ArrayList recogerDatosBBDDAlumnos() {
+	this.recogerDatosBBDDCursos();
+			System.out.println("pato");
+			miFichero = new File("src/Ficheros/Datos/DatosTabla.txt");
+			try {
+				leerFichero = new FileReader(miFichero);
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			BufferedReader br = new BufferedReader(leerFichero);
+			String lineaAlumno="";
+			resultados = new ArrayList<>();
+			try {
+				//resultados = new ArrayList<Alumnos>();
+
+				
+				String datoAlumno="";
+				int posCurso=1;
+				String curso="";
+				
+				while((lineaAlumno=br.readLine()) != null){
+					StringTokenizer st = new StringTokenizer(lineaAlumno,"-");
+					ArrayList<String> datosPorCadaAlumno = new ArrayList<String>();
+				    while (st.hasMoreTokens()){
+				    	datoAlumno=st.nextToken();
+				        datosPorCadaAlumno.add(datoAlumno);
+				        if(posCurso==7){
+				        	curso=datoAlumno;
+				        	posCurso=-1;
+				        	
+				        }
+				        posCurso++;
+				        
+					}
+				  
+				    for (int i = 0; i < resultados2.size(); i++) {
+						if(resultados2.get(i).getCurso().equals(curso)){
+							System.out.println("el curso que busco es: " + curso);
+							alumno = new Alumnos(Integer.parseInt(datosPorCadaAlumno.get(0)), datosPorCadaAlumno.get(2).toUpperCase(), datosPorCadaAlumno.get(3).toUpperCase(), datosPorCadaAlumno.get(1).toUpperCase(), datosPorCadaAlumno.get(4).toUpperCase(), Integer.parseInt(datosPorCadaAlumno.get(5)),resultados2.get(i),Integer.parseInt(datosPorCadaAlumno.get(7)));
+							resultados.add(alumno);
+						}
+						
+					}
+					
+					
+
+				}
+			
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+			}
+			
+			
+		
+		
+		return resultados;
+	}
+	
+	public ArrayList recogerDatosBBDDCursos(){
 		System.out.println("pato");
-		miFichero = new File("src/Ficheros/Datos/DatosTabla.txt");
+		miFichero = new File("src/Ficheros/Datos/DatosTabla2.txt");
 		try {
 			leerFichero = new FileReader(miFichero);
 		} catch (FileNotFoundException e1) {
@@ -46,29 +109,29 @@ public class ModeloFicheros implements InterfaceAccesoDatos { //Heredamos del pa
 			e1.printStackTrace();
 		}
 		BufferedReader br = new BufferedReader(leerFichero);
-		String lineaAlumno="";
-		resultados = new ArrayList<>();
+		String lineaCurso="";
+		resultados2 = new ArrayList<>();
 		try {
-			//resultados = new ArrayList<Alumnos>();
-
-			
-			
-			while((lineaAlumno=br.readLine()) != null){
-				StringTokenizer st = new StringTokenizer(lineaAlumno,"-");
-				ArrayList<String> datosPorCadaAlumno = new ArrayList<String>();
+			while((lineaCurso=br.readLine()) != null){
+				StringTokenizer st = new StringTokenizer(lineaCurso,"_");
+				ArrayList<String> datosPorCadaCurso = new ArrayList<String>();
 			    while (st.hasMoreTokens()){
-			        datosPorCadaAlumno.add(st.nextToken());
+			    	datosPorCadaCurso.add(st.nextToken());
 				}
-				alumno = new Alumnos(Integer.parseInt(datosPorCadaAlumno.get(0)), datosPorCadaAlumno.get(2).toUpperCase(), datosPorCadaAlumno.get(3).toUpperCase(), datosPorCadaAlumno.get(1).toUpperCase(), datosPorCadaAlumno.get(4).toUpperCase(), Integer.parseInt(datosPorCadaAlumno.get(5)));
-				resultados.add(alumno);
+			    
+				curso = new Cursos(Integer.parseInt(datosPorCadaCurso.get(0)), datosPorCadaCurso.get(1).toUpperCase(), datosPorCadaCurso.get(2).toUpperCase(), datosPorCadaCurso.get(3).toUpperCase(), datosPorCadaCurso.get(4).toUpperCase());
+			resultados2.add(curso);
 
 			}
+			
+			System.out.println("los resultados2 tienen un size de: " + resultados2.size());
 		
 		} catch (IOException e) {
 			
 			e.printStackTrace();
 		}
-		return resultados;
+		
+	return resultados2;
 	}
 
 	@Override
@@ -98,8 +161,9 @@ public class ModeloFicheros implements InterfaceAccesoDatos { //Heredamos del pa
 		boolean esIgual=false;
 		
 			for (int i = 0; i < resultados.size(); i++) {
-				
+			
 					if(String.valueOf(alumno.getDni()).equals(String.valueOf(resultados.get(i).getDni()))){
+						System.out.println("Aquí entra?");
 						esIgual=true;
 					}
 								
@@ -108,7 +172,8 @@ public class ModeloFicheros implements InterfaceAccesoDatos { //Heredamos del pa
 				FileWriter fw = new FileWriter(miFichero, true);
 			     BufferedWriter bw = new BufferedWriter(fw);
 			     PrintWriter pw = new PrintWriter(bw);
-			        pw.println(String.valueOf(cod) + "-" + alumno.getDni() + "-" + alumno.getNombre() + "-" + alumno.getApellido() + "-" + alumno.getNacionalidad() + "-" + String.valueOf(alumno.getTelefono()));
+			     System.out.println("el curso correspondiente es: " + alumno.getCurso().getCurso().toUpperCase());
+			        pw.println(String.valueOf(cod) + "-" + alumno.getDni().toUpperCase() + "-" + alumno.getNombre().toUpperCase() + "-" + alumno.getApellido().toUpperCase() + "-" + alumno.getNacionalidad().toUpperCase() + "-" + String.valueOf(alumno.getTelefono()) + "-" + alumno.getCurso().getCurso().toUpperCase() + "-" + String.valueOf(alumno.getId_Curso()));
 			        pw.close();
 			        respuesta=1;		
 			}
@@ -224,6 +289,111 @@ public class ModeloFicheros implements InterfaceAccesoDatos { //Heredamos del pa
 			e.printStackTrace();
 		}
 		return respuesta;
+	}
+
+	@Override
+	public int addUnCurso(Cursos curso) {
+		int respuesta=0;
+		int cod;
+		try {
+			miFichero = new File("src/Ficheros/Datos/DatosTabla2.txt");
+			leerFichero = new FileReader(miFichero);
+			 BufferedReader br = new BufferedReader(leerFichero);
+			 String lineaCompletaCurso="";
+			 String ultimoCod="";
+			 StringTokenizer codUltimoCurso=null;
+			 while((lineaCompletaCurso=br.readLine())!=null){
+				 codUltimoCurso = new StringTokenizer(lineaCompletaCurso,"_");
+				 ultimoCod=codUltimoCurso.nextToken();
+				
+			 }
+			if(ultimoCod==""){
+				cod=1;
+				
+			}else{
+				cod =Integer.parseInt(ultimoCod);
+				cod++;
+			}
+			
+		boolean esIgual=false;
+
+			for (int i = 0; i < resultados2.size(); i++) {
+					if(curso.getCurso().equals(resultados2.get(i).getCurso())){
+
+
+						esIgual=true;
+					}
+								
+			}
+			if(esIgual==false){
+				FileWriter fw = new FileWriter(miFichero, true);
+			     BufferedWriter bw = new BufferedWriter(fw);
+			     PrintWriter pw = new PrintWriter(bw);
+			        pw.println(String.valueOf(cod) + "_" + curso.getCurso().toUpperCase() + "_" + curso.getFechaInicio().toUpperCase() + "_" + curso.getFechaFin().toUpperCase() + "_" + curso.getTitulacion().toUpperCase());
+			        pw.close();
+			        respuesta=1;		
+			}
+			 
+			
+		} catch (IOException e) {
+			respuesta=0;
+			e.printStackTrace();
+		}
+		return respuesta;
+		
+		
+	}
+
+	@Override
+	public ArrayList<Cursos> getResultados2() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int deleteCurso(String codCursos) {
+		int respuesta=0;
+		try {
+			miFichero = new File("src/Ficheros/Datos/DatosTabla2.txt");
+			leerFichero = new FileReader(miFichero);
+			BufferedReader br = new BufferedReader(leerFichero);
+			 String lineaCompletaCurso="";
+			 StringTokenizer codTokenizer=null;
+			 ArrayList<String> sobreescribir = new ArrayList<String>();
+			 String codigo="";
+			 
+			 while((lineaCompletaCurso=br.readLine())!=null){
+				
+				 codTokenizer = new StringTokenizer(lineaCompletaCurso,"_");
+				if(!String.valueOf(codCursos).equals(codTokenizer.nextToken())){
+					 sobreescribir.add(lineaCompletaCurso);    
+				}
+				 
+			 }
+			 FileWriter fw = new FileWriter(miFichero,false);
+		     BufferedWriter bw = new BufferedWriter(fw);
+		     PrintWriter pw = new PrintWriter(bw);
+		     for (int i = 0; i < sobreescribir.size(); i++) {
+				pw.println(sobreescribir.get(i));
+				 
+			}
+		     pw.close();
+		     respuesta=1;
+			
+			
+		} catch (IOException e) {
+			respuesta=0;
+			e.printStackTrace();
+		}
+		 
+		return respuesta;
+		
+	}
+
+	@Override
+	public int deleteAllCursos() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 

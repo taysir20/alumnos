@@ -20,6 +20,8 @@ public class Launcher {
 		modeloPrincipal.setVistaPrincipal(vistaAlumnos);
 		modeloPrincipal.NuevoDato(vistaAlumnos.tipoDeDatos());
 		controlador.conexionDatos();
+		modeloPrincipal.recogerDatosBBDDCursos();
+		controlador.crearComboBoxCursos();
 		controlador.crearTablaAlumnos();
 		vistaAlumnos.setVisible(true);
 	
