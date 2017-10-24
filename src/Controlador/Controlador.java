@@ -185,4 +185,9 @@ public class Controlador {
 		
 	}
 
+	public void borrarTodosCursos() {
+		modeloPrincipal.borrarTodosCursos();
+		
+	}
+
 }

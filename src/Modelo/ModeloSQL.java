@@ -352,8 +352,19 @@ public class ModeloSQL implements InterfaceAccesoDatos{
 
 	@Override
 	public int deleteAllCursos() {
-		// TODO Auto-generated method stub
-		return 0;
+		int respuesta=0;
+		try {
+			if (conexion == null) {
+				System.out.println("NO EXISTE");
+				System.exit(-1);
+			}
+			PreparedStatement pstmt = conexion.prepareStatement("DELETE FROM `cursos` ");
+
+			respuesta=pstmt.executeUpdate();
+		} catch (SQLException s) {
+			s.printStackTrace();
+		}
+		return respuesta;
 	}
 
 

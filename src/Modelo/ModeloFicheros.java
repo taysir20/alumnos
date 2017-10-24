@@ -20,6 +20,7 @@ public class ModeloFicheros implements InterfaceAccesoDatos { //Heredamos del pa
 	
 	private Alumnos alumno = null;
 	private Cursos curso = null;
+	private FileReader leerFichero2;
 	
 	@Override
 	public String AccesoBBDD() {
@@ -45,11 +46,14 @@ public class ModeloFicheros implements InterfaceAccesoDatos { //Heredamos del pa
 			miFichero = new File("src/Ficheros/Datos/DatosTabla.txt");
 			try {
 				leerFichero = new FileReader(miFichero);
+				
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			BufferedReader br = new BufferedReader(leerFichero);
+			
+			
 			String lineaAlumno="";
 			resultados = new ArrayList<>();
 			try {
@@ -190,6 +194,8 @@ public class ModeloFicheros implements InterfaceAccesoDatos { //Heredamos del pa
 
 	@Override
 	public int deleteAlumno(String cod) {
+		
+		
 		int respuesta=0;
 		try {
 			miFichero = new File("src/Ficheros/Datos/DatosTabla.txt");
@@ -228,6 +234,8 @@ public class ModeloFicheros implements InterfaceAccesoDatos { //Heredamos del pa
 		
 		
 	}
+	
+	
 
 	@Override
 	public int deleteAllAlumnos() {
@@ -392,8 +400,22 @@ public class ModeloFicheros implements InterfaceAccesoDatos { //Heredamos del pa
 
 	@Override
 	public int deleteAllCursos() {
-		// TODO Auto-generated method stub
-		return 0;
+		int respuesta=0;
+		
+		
+		miFichero = new File("src/Ficheros/Datos/DatosTabla2.txt");
+		try {
+			FileWriter fw = new FileWriter(miFichero);
+			BufferedWriter bw = new BufferedWriter(fw);
+			PrintWriter pw = new PrintWriter(bw);
+			pw.close();
+			respuesta=1;
+		} catch (IOException e) {
+			respuesta=0;
+			e.printStackTrace();
+		}
+	
+	return respuesta;
 	}
 
 

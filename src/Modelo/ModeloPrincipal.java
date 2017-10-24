@@ -31,6 +31,8 @@ public class ModeloPrincipal {
 	ArrayList<Cursos> resultados2;
 	private VistaCursos misCursos;
 	
+	
+	
 	public void conexionDatos() { // preguntamos si es null 
 			if(modelo.AccesoBBDD().equals("error")){
 				this.vistaAlumnos.generarRespuesta("No se ha podido establecer conexión con la fuente de datos");
@@ -70,6 +72,7 @@ public class ModeloPrincipal {
 		if(tipoDeDato.equalsIgnoreCase("SQL")){
 			modelo=new ModeloSQL();
 		}else if(tipoDeDato.equalsIgnoreCase("FICHEROS")){
+			
 			modelo=new ModeloFicheros();
 		}
 	}
@@ -219,6 +222,13 @@ public class ModeloPrincipal {
 		
 	}
 	public void borrarCursos(String codCurso) {
+		
+	
+	
+		
+		
+		
+		
 		String curso="";
 		for (int i = 0; i < resultados2.size(); i++) {
 			if(codCurso.equals(String.valueOf(resultados2.get(i).getId()))){
@@ -226,18 +236,34 @@ public class ModeloPrincipal {
 			}
 			
 		}
-	
+		
+		this.recogerDatosBBDDCursos();
 		this.vistaAlumnos.generarRespuesta("Al borrar un curso borrarás todos los alumnos relacionados con él. ¿Estás seguro?");
 		if(modelo.deleteCurso(codCurso)==1){
-			this.recogerDatosBBDDCursos();
-			this.recogerDatosBBDDAlumnos();
 			
+		
+		
+	
+			this.actualizarTablaAlumnos(resultados);
 			this.misCursos.crearTablaCursos(resultados2);
 			this.vistaAlumnos.crearTablaAlumnos(resultados);
 			this.vistaAlumnos.borrarCursos(curso);
 			this.vistaAlumnos.generarRespuesta("Registro borrado satisfactoriamente");
 		}else{
 			this.vistaAlumnos.generarRespuesta("No se ha podido borrar el registro");
+		}
+		
+	}
+	public void borrarTodosCursos() {
+		this.vistaAlumnos.generarRespuesta("ATENCIÓN: SE BORRARÁN TODOS LOS ALUMNOS PERTENECIENTES A LOS CURSOS.");
+		if(modelo.deleteAllCursos()>0){
+			
+			this.recogerDatosBBDDCursos();
+			this.borrarTodosAlumnos();
+			this.misCursos.crearTablaCursos(resultados2);
+			this.vistaAlumnos.generarRespuesta("Todos los registros han sido borrados satisfactoriamente.");
+		}else{
+			this.vistaAlumnos.generarRespuesta("No se ha podido borrar los registros");
 		}
 		
 	}

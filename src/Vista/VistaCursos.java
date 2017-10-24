@@ -110,6 +110,12 @@ public class VistaCursos extends JFrame {
 		button_3 = new JButton("VOLCAR DATOS DE CUALQUIER FICHERO A UNA BBDD");
 		
 		btnBorrarTodo = new JButton("BORRAR TODO");
+		btnBorrarTodo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				controlador.borrarTodosCursos();
+			}
+		});
 		
 		btnVolcarDatos = new JButton("VOLCAR DATOS");
 		btnVolcarDatos.addActionListener(new ActionListener() {
@@ -321,6 +327,12 @@ public class VistaCursos extends JFrame {
 	}
 
 	public void crearTablaCursos(ArrayList<Cursos> resultados2) {
+		DefaultTableModel model = new DefaultTableModel() {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		System.out.println("mis resutlados 2 son en la vista: " + resultados2);
 		if(resultados2.isEmpty()){
 			
@@ -328,12 +340,7 @@ public class VistaCursos extends JFrame {
 			System.out.println(resultados2.get(0).getFechaInicio());
 			//System.out.println("LA FECHA ES" + resultados2.get(0).getFechaInicio());
 			this.resultados2=resultados2;
-			DefaultTableModel model = new DefaultTableModel() {
-				@Override
-				public boolean isCellEditable(int row, int column) {
-					return false;
-				}
-			};
+			
 
 			model.addColumn("ID");
 			model.addColumn("CURSO");
@@ -346,9 +353,9 @@ public class VistaCursos extends JFrame {
 						resultados2.get(i).getFechaInicio(), resultados2.get(i).getFechaFin(), resultados2.get(i).getTitulacion()});
 			}
 
-			this.getTableCursos().setModel(model);
+			
 		}
-		
+		this.getTableCursos().setModel(model);
 		
 	}
 
