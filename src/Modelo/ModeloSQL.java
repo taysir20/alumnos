@@ -281,18 +281,20 @@ public class ModeloSQL implements InterfaceAccesoDatos{
 
 
 	@Override
-	public int actualizarJugadores(String cod, Alumnos alumno) {
+	public int actualizarJugadores(Alumnos alumno) {
+		System.out.println(alumno.getCod());
 		int respuesta=0;
 		try {
 			PreparedStatement pstmt;
 			String query="UPDATE `alumnos` SET `dni` = ?,`nombre` = ?, `apellido` = ?"
-					+ ", `nacionalidad` = ?, `telefono` = ? WHERE `alumnos`.`cod` = '" + cod + "'";
+					+ ", `nacionalidad` = ?, `telefono` = ?, `id_curso` = ? WHERE `alumnos`.`cod` = '" + alumno.getCod() + "'";
 			pstmt = conexion.prepareStatement(query);
 			pstmt.setString(1, alumno.getDni().toUpperCase());
 			pstmt.setString(2, alumno.getNombre().toUpperCase());
 			pstmt.setString(3, alumno.getApellido().toUpperCase());
 			pstmt.setString(4, alumno.getNacionalidad().toUpperCase());
 			pstmt.setInt(5, alumno.getTelefono());
+			pstmt.setInt(6, alumno.getCurso().getId());
 			respuesta=pstmt.executeUpdate();
 			System.out.println(respuesta);
 			respuesta=1;

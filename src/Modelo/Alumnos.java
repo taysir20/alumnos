@@ -10,6 +10,11 @@ public class Alumnos {
 	private Cursos curso;
 	private int id_Curso;
 	
+	
+
+	public Alumnos() {
+		super();
+	}
 
 	public Alumnos(int cod, String nombre, String apellido, String dni, String nacionalidad, int telefono,
 			Cursos curso, int id_Curso) {

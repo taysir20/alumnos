@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="Modelo.Cursos" table="cursos">
+		<id name="id" type="int">
+			<column name="ID" />
+			<generator class="increment" />
+		</id>
+
+		<property name="curso" type="string">
+			<column name="nombreCurso" length="255" not-null="true" />
+		</property>
+		
+		<property name="fechaInicio" type="string">
+			<column name="fechaInicial" length="255" not-null="true" />
+		</property>
+		
+		<property name="fechaFin" type="string">
+			<column name="fechaFinal" length="255" not-null="true" />
+		</property>
+		
+		<property name="titulacion" type="string">
+			<column name="titulacion" not-null="true" />
+		</property>
+
+	</class>
+
+</hibernate-mapping>

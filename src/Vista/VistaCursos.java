@@ -48,7 +48,6 @@ public class VistaCursos extends JFrame {
 	private JButton btnBorrarTodo;
 	private JButton btnAnadir;
 	private JButton btnBorrar;
-	private JButton btnActualizar;
 	private JButton btnVolcarDatos;
 	private Controlador controlador;
 	private ArrayList<Cursos> resultados2;
@@ -80,152 +79,143 @@ public class VistaCursos extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		
+
 		JLabel lblCursos = new JLabel("Cursos");
 		lblCursos.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		
+
 		btnAnadir = new JButton("A\u00D1ADIR");
 		btnAnadir.addActionListener(new ActionListener() {
 
-		
 			public void actionPerformed(ActionEvent e) {
 				controlador.addCursos();
 			}
 		});
-		
+
 		btnBorrar = new JButton("BORRAR");
 		btnBorrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controlador.borrarCursos();
-				btnActualizar.setEnabled(true);
 				btnBorrar.setEnabled(true);
-				
+
 			}
 		});
 		btnBorrar.setEnabled(false);
-		
-		btnActualizar = new JButton("ACTUALIZAR");
-		btnActualizar.setEnabled(false);
-		
+
 		button_3 = new JButton("VOLCAR DATOS DE CUALQUIER FICHERO A UNA BBDD");
-		
+
 		btnBorrarTodo = new JButton("BORRAR TODO");
 		btnBorrarTodo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				controlador.borrarTodosCursos();
 			}
 		});
-		
+
 		btnVolcarDatos = new JButton("VOLCAR DATOS");
 		btnVolcarDatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controlador.intercambioDatosCursos();
 			}
 		});
-		
+
 		txtNombre = new JTextField();
 		txtNombre.setColumns(10);
-		
+
 		JLabel label = new JLabel("Nombre:");
-		
+
 		JLabel lblTitulacion = new JLabel("Titulaci\u00F3n:");
-		
+
 		comboBoxTitulacion = new JComboBox();
-		comboBoxTitulacion.setModel(new DefaultComboBoxModel(new String[] {"GRADO", "CICLO FORMATIVO SUPERIOR", "CICLO FORMATIVO MEDIO", "POST GRADO"}));
-		
+		comboBoxTitulacion.setModel(new DefaultComboBoxModel(
+				new String[] { "GRADO", "CICLO FORMATIVO SUPERIOR", "CICLO FORMATIVO MEDIO", "POST GRADO" }));
+
 		JLabel lblFechaDeInicio = new JLabel("Fecha de Inicio:");
-		
+
 		dateInicio = new JDateChooser();
-		
+
 		JLabel lblFechaDeFin = new JLabel("Fecha de Fin:");
-		
+
 		dateFin = new JDateChooser();
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
+				.createSequentialGroup().addContainerGap()
+				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup().addComponent(scrollPane,
+								GroupLayout.DEFAULT_SIZE, 668, Short.MAX_VALUE).addContainerGap())
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 668, Short.MAX_VALUE)
-							.addContainerGap())
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(btnAnadir, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(btnBorrar, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(btnActualizar, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(btnBorrarTodo, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
-									.addGap(81)
-									.addComponent(btnVolcarDatos, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE))
-								.addComponent(button_3, GroupLayout.PREFERRED_SIZE, 297, GroupLayout.PREFERRED_SIZE)))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(lblCursos, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap(563, Short.MAX_VALUE))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(btnAnadir, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+								.addGap(18)
+								.addComponent(btnBorrar, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED, 206, Short.MAX_VALUE)
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_contentPane.createSequentialGroup()
+												.addComponent(btnBorrarTodo, GroupLayout.PREFERRED_SIZE, 107,
+														GroupLayout.PREFERRED_SIZE)
+												.addGap(81).addComponent(btnVolcarDatos, GroupLayout.PREFERRED_SIZE,
+														109, GroupLayout.PREFERRED_SIZE))
+										.addComponent(button_3, GroupLayout.PREFERRED_SIZE, 297,
+												GroupLayout.PREFERRED_SIZE)))
+						.addGroup(
+								gl_contentPane.createSequentialGroup()
+										.addComponent(lblCursos, GroupLayout.PREFERRED_SIZE, 115,
+												GroupLayout.PREFERRED_SIZE)
+										.addContainerGap(563, Short.MAX_VALUE))
+						.addGroup(gl_contentPane.createSequentialGroup().addGroup(gl_contentPane
+								.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-									.addComponent(label, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
-									.addComponent(comboBoxTitulacion, 0, 276, Short.MAX_VALUE)
-									.addComponent(txtNombre))
-								.addComponent(lblTitulacion, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE))
-							.addGap(55)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblFechaDeFin, GroupLayout.PREFERRED_SIZE, 287, GroupLayout.PREFERRED_SIZE)
-								.addComponent(dateFin, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-								.addComponent(dateInicio, GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
-								.addComponent(lblFechaDeInicio, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-							.addContainerGap())))
-		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
+										.addComponent(label, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
+										.addComponent(comboBoxTitulacion, 0, 276, Short.MAX_VALUE)
+										.addComponent(txtNombre))
+								.addComponent(lblTitulacion, GroupLayout.PREFERRED_SIZE, 65,
+										GroupLayout.PREFERRED_SIZE))
+								.addGap(55)
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblFechaDeFin, GroupLayout.PREFERRED_SIZE, 287,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(dateFin, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 337,
+												Short.MAX_VALUE)
+										.addComponent(dateInicio, GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
+										.addComponent(lblFechaDeInicio, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE,
+												337, Short.MAX_VALUE))
+								.addContainerGap()))));
+		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addComponent(lblCursos, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 193, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(label)
-						.addComponent(lblFechaDeInicio))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(txtNombre, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblTitulacion)
-								.addComponent(lblFechaDeFin)))
-						.addComponent(dateInicio, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(6)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(dateFin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(button_3))
-						.addComponent(comboBoxTitulacion, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(6)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnAnadir)
-						.addComponent(btnBorrar)
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-							.addComponent(btnActualizar)
-							.addComponent(btnBorrarTodo))
-						.addComponent(btnVolcarDatos))
-					.addGap(40))
-		);
-		
+						.addComponent(lblCursos, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 193, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE).addComponent(label)
+								.addComponent(lblFechaDeInicio))
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+										.addComponent(txtNombre, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.UNRELATED)
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+												.addComponent(lblTitulacion).addComponent(lblFechaDeFin)))
+								.addComponent(dateInicio, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE))
+						.addGap(6)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+										.addComponent(dateFin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(18).addComponent(button_3))
+								.addComponent(comboBoxTitulacion, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE))
+						.addGap(6)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addComponent(btnAnadir)
+								.addComponent(btnBorrar).addComponent(btnBorrarTodo).addComponent(btnVolcarDatos))
+						.addGap(40)));
+
 		tableCursos = new JTable();
 		tableCursos.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				controlador.verInformacionCursos();
-				btnActualizar.setEnabled(true);
 				btnBorrar.setEnabled(true);
 			}
 		});
@@ -242,8 +232,8 @@ public class VistaCursos extends JFrame {
 	}
 
 	public void setControlador(Controlador controlador) {
-		this.controlador=controlador;
-		
+		this.controlador = controlador;
+
 	}
 
 	public String getTxtNombre() {
@@ -256,8 +246,8 @@ public class VistaCursos extends JFrame {
 
 	public String getDateInicio() {
 		parseador = new SimpleDateFormat("dd-MM-yyyy");
-	
-		return 	parseador.format(dateInicio.getDate()).toString();
+
+		return parseador.format(dateInicio.getDate()).toString();
 	}
 
 	public void setDateInicio(JDateChooser dateInicio) {
@@ -266,7 +256,7 @@ public class VistaCursos extends JFrame {
 
 	public String getDateFin() {
 		parseador2 = new SimpleDateFormat("dd-MM-yyyy");
-		return 	parseador.format(dateFin.getDate()).toString();
+		return parseador.format(dateFin.getDate()).toString();
 	}
 
 	public void setDateFin(JDateChooser dateFin) {
@@ -305,14 +295,6 @@ public class VistaCursos extends JFrame {
 		this.btnBorrar = btnBorrar;
 	}
 
-	public JButton getBtnActualizar() {
-		return btnActualizar;
-	}
-
-	public void setBtnActualizar(JButton btnActualizar) {
-		this.btnActualizar = btnActualizar;
-	}
-
 	public JButton getBtnVolcarDatos() {
 		return btnVolcarDatos;
 	}
@@ -320,10 +302,10 @@ public class VistaCursos extends JFrame {
 	public void setBtnVolcarDatos(JButton btnVolcarDatos) {
 		this.btnVolcarDatos = btnVolcarDatos;
 	}
-	
+
 	public void generarRespuesta(String respuesta) {
 		JOptionPane.showMessageDialog(null, respuesta);
-		
+
 	}
 
 	public void crearTablaCursos(ArrayList<Cursos> resultados2) {
@@ -334,13 +316,13 @@ public class VistaCursos extends JFrame {
 			}
 		};
 		System.out.println("mis resutlados 2 son en la vista: " + resultados2);
-		if(resultados2.isEmpty()){
-			
-		}else{
+		if (resultados2.isEmpty()) {
+
+		} else {
 			System.out.println(resultados2.get(0).getFechaInicio());
-			//System.out.println("LA FECHA ES" + resultados2.get(0).getFechaInicio());
-			this.resultados2=resultados2;
-			
+			// System.out.println("LA FECHA ES" +
+			// resultados2.get(0).getFechaInicio());
+			this.resultados2 = resultados2;
 
 			model.addColumn("ID");
 			model.addColumn("CURSO");
@@ -350,45 +332,41 @@ public class VistaCursos extends JFrame {
 
 			for (int i = 0; i < this.resultados2.size(); i++) {
 				model.addRow(new String[] { String.valueOf(resultados2.get(i).getId()), resultados2.get(i).getCurso(),
-						resultados2.get(i).getFechaInicio(), resultados2.get(i).getFechaFin(), resultados2.get(i).getTitulacion()});
+						resultados2.get(i).getFechaInicio(), resultados2.get(i).getFechaFin(),
+						resultados2.get(i).getTitulacion() });
 			}
 
-			
 		}
 		this.getTableCursos().setModel(model);
-		
+
 	}
 
 	public void mostrarDatosCurso(String codCurso) {
-		Cursos datosCursos=null;
+		Cursos datosCursos = null;
 		for (int i = 0; i < resultados2.size(); i++) {
-			if(resultados2.get(i).getId()==Integer.parseInt(codCurso)){
+			if (resultados2.get(i).getId() == Integer.parseInt(codCurso)) {
 				txtNombre.setText(resultados2.get(i).getCurso());
 				comboBoxTitulacion.setSelectedItem(resultados2.get(i).getTitulacion());
 				dateInicio.setDateFormatString("dd-MM-yyyy");
 				dateFin.setDateFormatString("dd-MM-yyyy");
 				Date date = null;
 				Date date2 = null;
-				
-				
-				DateFormat df = new SimpleDateFormat("dd-MM-yyyy"); 
-			
+
+				DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+
 				try {
 					date = df.parse(resultados2.get(i).getFechaInicio());
-					date2= df.parse(resultados2.get(i).getFechaFin());
-				   dateInicio.setDate(date);
-				   dateFin.setDate(date2);
+					date2 = df.parse(resultados2.get(i).getFechaFin());
+					dateInicio.setDate(date);
+					dateFin.setDate(date2);
 				} catch (ParseException e) {
-				    e.printStackTrace();
+					e.printStackTrace();
 				}
 				break;
 			}
-			
+
 		}
-		
+
 	}
-	
-	
-	
-	
+
 }

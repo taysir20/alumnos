@@ -403,6 +403,7 @@ public class VistaAlumnos extends JFrame {
 	
 	public void mostrarDatosAlumno(String cod) {
 		Alumnos datosAlumno=null;
+		
 		for (int i = 0; i < resultados.size(); i++) {
 			if(resultados.get(i).getCod()==Integer.parseInt(cod)){
 				txtNombre.setText(resultados.get(i).getNombre());
@@ -410,6 +411,7 @@ public class VistaAlumnos extends JFrame {
 				txtDNI.setText(resultados.get(i).getDni());
 				txtTelefono.setText(String.valueOf(resultados.get(i).getTelefono()));
 				comboBoxNacionalidad.setSelectedItem(resultados.get(i).getNacionalidad());
+				comboBoxCurso.setSelectedItem(resultados.get(i).getCurso().getCurso());
 				break;
 			}
 			
@@ -523,7 +525,7 @@ public class VistaAlumnos extends JFrame {
 		
 	}
 	public String tipoDeDatos() {
-		String[] tipoBBDD = { "SQL", "FICHEROS", };
+		String[] tipoBBDD = { "SQL", "FICHEROS","HIBERNATE" };
 		return (String) JOptionPane.showInputDialog(null, "Seleccione el tipo de acceso a datos", "Tipo",
 				JOptionPane.DEFAULT_OPTION, null, tipoBBDD, tipoBBDD[0]); // por
 																			// defecto
@@ -542,8 +544,11 @@ public class VistaAlumnos extends JFrame {
 	public void actualizarCursos(String curso){
 		this.arrCurso.add(curso);
 		String cursos[]= new String[arrCurso.size()];
+		System.out.println("Los cursos que tengo son: ");
 		for (int i = 0; i < arrCurso.size(); i++) {
 			cursos[i]=arrCurso.get(i);
+			System.out.println(cursos[i]);
+			
 			
 		}
 		comboBoxCurso.setModel(new DefaultComboBoxModel(cursos));

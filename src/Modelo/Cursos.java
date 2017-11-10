@@ -10,6 +10,10 @@ public class Cursos {
 	private String titulacion;
 	
 	
+	public Cursos() {
+		super();
+	}
+
 	public Cursos(int id, String curso, String fechaInicio, String fechaFin, String titulacion) {
 		this.id = id;
 		this.curso = curso;

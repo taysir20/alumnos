@@ -12,6 +12,6 @@ public interface InterfaceAccesoDatos {
 	public int deleteCurso(String codCursos);
 	public int deleteAllAlumnos();
 	public int deleteAllCursos();
-	public int actualizarJugadores(String cod,Alumnos alumno);
+	public int actualizarJugadores(Alumnos alumno);
 	public ArrayList<Cursos> getResultados2();
 }

@@ -86,7 +86,6 @@ public class Controlador {
 				System.out.println("FECHA:::::" + this.misCursos.getDateInicio());
 			this.modeloPrincipal.addCursos(this.misCursos.getTxtNombre(),
 					this.misCursos.getDateInicio(),this.misCursos.getDateFin(), this.misCursos.getComboBoxTitulacion());
-				this.misCursos.getBtnActualizar().setEnabled(false);
 				this.misCursos.getBtnBorrar().setEnabled(false);
 			}
 		

@@ -78,7 +78,11 @@ public class ModeloFicheros implements InterfaceAccesoDatos { //Heredamos del pa
 				        posCurso++;
 				        
 					}
-				  
+				    System.out.println("INICIO ALUMNOSSSSS::: ");
+				    for (int i = 0; i < datosPorCadaAlumno.size(); i++) {
+						System.out.print(datosPorCadaAlumno.get(i) + " ");
+					}
+				    System.out.println("FIN ALUMNOSSSSS");
 				    for (int i = 0; i < resultados2.size(); i++) {
 						if(resultados2.get(i).getCurso().equals(curso)){
 							System.out.println("el curso que busco es: " + curso);
@@ -260,7 +264,7 @@ public class ModeloFicheros implements InterfaceAccesoDatos { //Heredamos del pa
 	}
 
 	@Override
-	public int actualizarJugadores(String cod, Alumnos alumno) {
+	public int actualizarJugadores(Alumnos alumno) {
 		int respuesta=0;
 		try {
 			miFichero = new File("src/Ficheros/Datos/DatosTabla.txt");
@@ -274,10 +278,10 @@ public class ModeloFicheros implements InterfaceAccesoDatos { //Heredamos del pa
 			 while((lineaCompletaAlumno=br.readLine())!=null){
 				
 				 codTokenizer = new StringTokenizer(lineaCompletaAlumno,"-");
-				if(!String.valueOf(cod).equals(codTokenizer.nextToken())){
+				if(!String.valueOf(alumno.getCod()).equals(codTokenizer.nextToken())){
 					 sobreescribir.add(lineaCompletaAlumno);    
 				}else{
-					sobreescribir.add(String.valueOf(alumno.getCod()) + "-" + alumno.getDni() + "-" + alumno.getNombre()  + "-" + alumno.getApellido() + "-" + alumno.getNacionalidad() + "-" + String.valueOf(alumno.getTelefono()));
+					sobreescribir.add(String.valueOf(alumno.getCod()) + "-" + alumno.getDni() + "-" + alumno.getNombre()  + "-" + alumno.getApellido() + "-" + alumno.getNacionalidad() + "-" + String.valueOf(alumno.getTelefono()) + "-" + alumno.getCurso().getCurso() + "-" + String.valueOf(alumno.getCurso().getId()));
 				}
 				 
 			 }
